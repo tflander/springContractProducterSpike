@@ -20,16 +20,19 @@ apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'spring-cloud-contract'
 
 group = 'todd'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
 compileKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
 		jvmTarget = "1.8"
 	}
 }
+
 compileTestKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
@@ -41,7 +44,6 @@ repositories {
 	mavenCentral()
 }
 
-
 ext {
 	springCloudVersion = 'Finchley.RELEASE'
 }
@@ -52,13 +54,17 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
 
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.cloud:spring-cloud-starter-contract-stub-runner')
-	testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
+	compile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.cloud:spring-cloud-starter-contract-stub-runner')
+	compile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+
+contracts {
+    baseClassForTests = 'todd.springContractSpike.FooTest'
 }
